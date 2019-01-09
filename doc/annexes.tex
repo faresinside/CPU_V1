@@ -1,0 +1,38 @@
+\section{Annexes}
+\label{sec:annexes}
+
+\paragraph{Chapeau :} Nous avons présenté les extension de notre projet dans section\ref{sec:extension}. Dans cette section nous allons expliquer les différents éléments logique utilisé dans le projet.
+
+\subsection{Full adder 1bit} 
+\label{sec:full adder}
+
+\paragraph{} Le full adder 1bit fait une addition de 2bits A et B et d'un bit de retenu en entrée. in en ressort un bit de retenu et un bit de résultat.
+
+\fig{images/full-ader.png}{7cm}{7cm}{Circuit logique du Full adder 1bit}{schema-comparateur1}
+
+\subsection{Décodeur 3bits} 
+\label{sec:dec3}
+
+\paragraph{} Le décodeur 3bits prend en entrée un mot de 3bits et active l'une des 8 sorties en fonction du signale d'entrée reçu.
+
+\fig{images/decodeur-3.png}{7cm}{7cm}{Circuit logique du décodeur 3bits}{schema-dec}
+
+\subsection{le décodeur d'instructions} 
+\label{sec:deci}
+
+\paragraph{} le décodeur d'instruction est un élément primordiale de l'unité de contrôle il prend en entrée un mot de 4bits (OPCODE) et renvoie des signaux de sélection pour l'ALU et l'unité d'adressage.
+
+\fig{images/decodeur-ins.png}{9cm}{9cm}{Circuit logique du décodeur d'instructions}{schema-deci}
+
+\subsection{registre 12bits} 
+\label{sec:reg 12}
+
+\fig{images/reg12.png}{9cm}{9cm}{Circuit logique du registre 12bits}{schema-reg12}
+
+
+\subsection{CPU} 
+\label{sec:CPUen}
+
+\paragraph{} le CPU est donc l'assemblage de l'ALU, le banc de registre, l'unité de contrôle, l'unité d'adressage.
+
+\fig{images/CPU.png}{14cm}{12cm}{Vu d'ensemble sur le CPU}{vu cpu}

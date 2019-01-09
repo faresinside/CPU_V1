@@ -1,0 +1,56 @@
+\section{Spécification}
+\label{sec:specification}
+
+\paragraph{Chapeau:}Nous avons présenté l'objectif du projet dans la section \ref{sec:introduction}. Dans cette section, nous présentons la spécification de notre processeur 4bits réalisé. Ceci correspond principalement au cahier des charges. Pour cela nous allons décrire chaque élément qui le compose.
+
+\subsection{L'ALU}
+\label{sec:ALU}
+Une ALU est une Unité Arithmétique et Logique. Elle permet de réaliser des opérations sur des
+opérandes présentes à ses entrées. Pour ce projet, le but est de réaliser une ALU capable d'effectuer 8
+opérations différentes.
+
+\fig{images/ALU-view.PNG}{6cm}{6cm}{Vu d'ensemble sur l'ALU}{view-alu}
+
+\subsection{Le banc de registre}
+\label{sec:banc}
+Le registre de 4 bits devra suivre le modèle suivant:
+
+\begin{enumerate}
+\item deux sorties de 4 bits pour chacune.
+\item une entrée de 4 bits.
+\item deux signaux de contrôle de lecture d'un bit chacun.
+\item un signal de contrôle d'écriture d'un bit.
+\item deux ports d’extension et une horloge.
+\end{enumerate}
+
+\fig{images/Bacn-de-registre-view.PNG}{9cm}{5cm}{Vu d'ensemble sur le banc de registre}{view-banc}
+
+\clearpage
+\subsection{L'unité d'adressage}
+\label{sec:unité adressage}
+
+L'unité d'adressage est uniquement composée de deux registre 4 bits : PC et AD.
+
+\begin{enumerate}
+\item PC est les registre d'adresse d'instruction.
+\item AD est le registre d'adresse de données.
+\end{enumerate}
+
+\fig{images/U-adressage-view.PNG}{9cm}{5cm}{Vu d'ensemble sur l'unité d'adressage}{view-U-adressage}
+
+\subsection{L'unité de contrôle}
+\label{sec:unité contrôle}
+
+L'unité de contrôle (UC) c'est l’unité qui contrôle l’exécution des instructions machines par le processeur a pour rôle de placer 
+les valeurs des différentes signaux de commande de l’architecture à chaque cycle.
+
+Le contrôle du chemin de données:
+\begin{enumerate}
+\item l’UAL par 3 signaux de commande 
+\item le choix de l’opérande X de l’ALU parmi 4 registres, donc 4 bits de commande 
+\item le choix de l’opérande Y de l’ALU parmi 4 registres, donc 4 bits de commande 
+\item le choix de la destination du rangement parmi 4 registres, donc 4 bits de commande 
+\item le choix d’un type d’accès mémoire (vers la mémoire) : Ecriture ou Lecture et le choix de faire un Fetch de l’instruction, soit 3 nouveaux signaux de commande
+\end{enumerate}
+
+\fig{images/U-controle-view.PNG}{7cm}{7cm}{Vu d'ensemble sur l'unité de contrôle}{view-U-controle}

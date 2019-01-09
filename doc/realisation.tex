@@ -1,0 +1,218 @@
+\section{Réalisation}
+\label{sec:Réalisation}
+
+\paragraph{Chapeau:} Nous avons présenté les spécifications du projet dans la section \ref{sec:specification}. Dans cette section, nous détaillons la conception de notre processeur et les techniques logique utilisées.
+
+\subsection{L'ALU}
+\label{sec:re-ALU}
+
+\paragraph{Composition:} Notre ALU est donc composée de :
+
+\begin{enumerate}
+\item deux entrées sur quatre bits.
+\item une sortie sur quatre bits.
+\item huit opération (dont un FULL-adder et FULL-substractor).
+\item un décodeur sur trois bits, trois vers huit.
+\end{enumerate}
+
+\paragraph{} Voici le tableau des instructions de l'ALU :
+
+\begin{center}
+\begin{tabular} {|p{2cm}|p{3cm}|}
+\hline
+Opération & Code d'Opération \\
+\hline
+Addition & 000 \\
+\hline
+OR & 001 \\
+\hline
+AND & 010 \\
+\hline
+NOT & 011 \\
+\hline
+Soustraction & 100 \\
+\hline
+NOR & 101 \\
+\hline
+NAND & 110 \\
+\hline
+NXOR & 111 \\
+\hline
+\end{tabular}
+\end{center}
+
+\fig{images/ALU-schema.png}{12cm}{11cm}{Circuit de l'ALU}{schema-alu}
+
+\subsection{Le banc de registre}
+\label{sec:re-banc}
+Le banc de registre est l'unité du CPU qui va stocker provisoirement les données provenant de la mémoire RAM ou de la sortie de l'ALU avent de dirigé soit vers l'entrée A ou l'entrée B de l'ALU pour qu'un calcule soit effectué sur celle-ci.
+
+\paragraph{Composition:} Notre Banc de registre est donc composée de :
+
+\begin{enumerate}
+\item une entrée un mot de quatre bits
+\item quatre registre de quatre bits
+\item chaque registre peut envoyer la donnée qu'il stocke soit vers la sortie X (l'entée A de l'ALU) soit vers la sortie Y (l'entrée B de l'ALU) , on a donc deux bits de sélection par registre , soit huit bits de sélection en sortie de registre.
+\end{enumerate}
+
+\fig{images/Banc-de-regidtre-schema.png}{13cm}{13cm}{Circuit du banc de registres}{schema-Banc-de-registre}
+
+\clearpage
+\subsection{L'unité d'adressage}
+\label{sec:re-unité adressage}
+L'unité d'adressage contient deux registre de quatre bits : le PC(Programm counter) et le AD(Adress)
+\begin{enumerate}
+\item Le PC est le registre qui contient l'adresse de la mémoire d'instruction a exécuté c'est-à-dire l'adresse contenant l'instruction a traité pas le CPU.
+\item Le AD est le registre contenant l'adresse de la mémoire de données qui est active c'est-à-dire l'adresse contenant les données traitées en lecture ou en écriture par le CPU.
+\end{enumerate}
+
+\paragraph{Composition:} Notre unité d'adressage est donc composée de :
+
+\begin{enumerate}
+\item deux entrées de quatre bits vers les deux registres.
+\item deux signaux de lecture.
+\item deux sortie des deux registres.
+\end{enumerate}
+
+\fig{images/U-adressage-schema.png}{13cm}{11cm}{Circuit de l'unité d'adressage}{schema-u-adressage}
+
+\subsection{L'unité de contrôle}
+\label{sec:re-unité contrôle}
+
+L'unité de contrôle est l'unité principale du CPU elle vient activer tous les signaux de commande du processeur en fonction 
+de l’instruction qui a été chargée depuis la mémoire.  Cette unité contient donc le registre d’instruction qui contient  les  différents champs correspondant aux catégories de commandes du processeur.
+
+\paragraph{les différents signaux:}
+\begin{enumerate}
+\item la sélection de l’opération réaliser par l'ALU.
+\item la sélection des registre dont le contenus sont lus et écrits.
+\item les indicateurs d'accès mémoire READ,WRITE et FETCH
+\end{enumerate}
+
+L'unité de contrôle incrémente également le contenu du registre PC pour que l'instruction suivante soit lue à chaque cycle d'horloge. Si l'entrée Reset est activée, le registre PC est replacé à sa position BOOT. Les instruction peuvent avoir deux format:  
+
+\paragraph{Format registre:}
+
+\begin{center}
+\begin{tabular} {|p{3cm}|p{2cm}|p{1.5cm}|p{1.5cm}|p{2.1cm}|}
+\hline
+OPCODE (4bits) & RES (2bits) & X (2bits) & Y (2bits) & EXT (2bits) \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+\item OPCODE: code de l’opération a réalisé.
+\item RES: code de sélection du registre ou sera stocker le résultat de l'opération.
+\item X: sélection du registre contenant l’opérande X (entrée A de l'ALU)
+\item Y: sélection du registre contenant l’opérande Y (entrée B de l'ALU)
+\item EXT: extension possible des instruction.
+\end{enumerate}
+
+\paragraph{Format immédiat:}
+
+\begin{center}
+\begin{tabular} {|p{3cm}|p{2cm}|p{3cm}|p{2.1cm}|}
+\hline
+OPCODE (4bits) & RES (2bits) & ADRESS (4bits) & EXT (2bits) \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+\item OPCODE: code de l’opération a réalisé.
+\item RES: sélection du registre source pour écrire dans la mémoire de données, ou destination pour lire dans la mémoire de données.
+\item ADRESS: sélection de l'adresse mémoire à lire ou écrire selon l’opération effectué.
+\item EXT: extension possible des instruction.
+\end{enumerate}
+
+\paragraph{Le jeu d'instruction de CPU est le suivant:}
+
+\begin{center}
+\begin{tabular} {|p{3.5cm}|p{2cm}|p{1.7cm}|}
+\hline
+Nom de l'instruction & OPCODE & format \\
+\hline
+ADD & 0000 & Registre \\
+\hline
+OR & 0001 & Registre \\
+\hline
+AND & 0010 & Registre \\
+\hline
+NOT(B) & 0011 & Registre \\
+\hline
+LOAD & 0100 & Immédiate \\
+\hline
+STORE & 1000 & Immédiate \\
+\hline
+SUB & 0101 & Registre \\
+\hline
+NOR & 0110 & Registre \\
+\hline
+NAND & 0111 & Registre \\
+\hline
+NXOR & 1010 & Registre \\
+\hline
+\end{tabular}
+\end{center}
+
+\paragraph{L'activation des signaux de lecture et écriture dans le banc de registre est pilotée comme suit :}
+
+\begin{center}
+\begin{tabular} {|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|}
+\hline
+Source & Code & (w,r)A & (w,r)B & (w,r)C & (w,r)D\\
+\hline
+A & 00 & 1 & 0 & 0 & 0\\
+\hline
+B & 01 & 0 & 1 & 0 & 0\\
+\hline
+C & 10 & 0 & 0 & 1 & 0\\
+\hline
+D & 11 & 0 & 0 & 0 & 1\\
+\hline
+\end{tabular}
+\end{center}
+
+\clearpage
+\paragraph{L'activation des signaux de commande de l'ALU,READ,WRITE,FETCH et accès à l'unité d'adressage est pilotée comme suit:}
+
+\begin{center}
+\begin{tabular} {|p{2cm}|p{2cm}|p{2.5cm}|p{1cm}|p{1.3cm}|p{2.1cm}|p{2cm}|p{1.3cm}|}
+\hline
+instruction & OPCODE & Sélection ALU & READ & WRITE & WRITE AD& WRITE PC&FETCH\\
+\hline
+ADD & 0000 & 000 & 0 & 0 & 0 & 1 & 1 \\
+\hline
+OR & 0001 & 001 & 0 & 0 & 0 & 1 & 1 \\
+\hline
+AND & 0010 & 010 & 0 & 0 & 0 & 1 & 1 \\
+\hline
+NOT(B) & 0011 & 011 & 0 & 0 & 0 & 1 & 1 \\
+\hline
+LOAD & 0100 & 000 & 1 & 0 & 1 & 1 & 1 \\
+\hline
+STORE & 1000 & 000 & 0 & 1 & 1 & 1 & 1 \\
+\hline
+SUB & 0101 & 100 & 0 & 0 & 0 & 1 & 1 \\
+\hline
+NOR & 0110 & 101 & 0 & 0 & 0 & 1 & 1 \\
+\hline
+NAND & 0111 & 110 & 0 & 0 & 0 & 1 & 1 \\
+\hline
+NXOR & 1010 & 111 & 0 & 0 & 0 & 1 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+\fig{images/U-controle.png}{15cm}{14cm}{Circuit de l'unité de contrôle}{schema-u-controle}
+
+\clearpage
+\subsection{Le CPU}
+\label{sec:CPU}
+
+les élément du CPU indiqué dans \ref{sec:re-ALU}, \ref{sec:re-banc}, \ref{sec:re-unité adressage}, \ref{sec:re-unité contrôle} serrant lié entre eux de la manière suivante : 
+
+\fig{images/cpu.PNG}{15cm}{14cm}{Schéma du CPU}{schema-cpu}
+
+\paragraph{} L'unité de contrôle va lire les instruction dans la ROM. Elle va les décoder soit au format immédiat soit au format registre en fonction du code d'opération et active ces différents sortie et elle va alimenté les autres composants.

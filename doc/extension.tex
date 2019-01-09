@@ -1,0 +1,68 @@
+\section{Extension}
+\label{sec:extension}
+
+\paragraph{Chapeau :} Nous avons présenté la réalisation de notre projet dans section\ref{sec:Réalisation}. Dans cette section nous allons expliquer les extension apporté au projet.
+
+\subsection{La soustraction}
+\label{sec:soustraction}
+
+La soustraction a été implémenté à l'ALU, et possède son propre code d'instruction pour l'Unité de
+contrôle. L'Opération est complétement opérationnelle.
+
+\subsubsection{La soustraction}
+\label{sec:sub-soustraction}
+\paragraph{table de vérité de la soustraction :}
+\begin{center}
+\begin{tabular} {|p{0.5cm}|p{0.5cm}|p{0.5cm}|p{1cm}|p{1.7cm}|}
+\hline
+A & B & C & DIFF & BORROW\\
+\hline
+0 & 0 & 0 & 0 & 0\\
+\hline
+0 & 0 & 1 & 1 & 1\\
+\hline
+0 & 1 & 0 & 1 & 1\\
+\hline
+0 & 1 & 1 & 0 & 1\\
+\hline
+1 & 0 & 0 & 1 & 0\\
+\hline
+1 & 0 & 1 & 0 & 0\\
+\hline
+1 & 1 & 0 & 0 & 0\\
+\hline
+1 & 1 & 1 & 1 & 1\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Schéma de la soustraction}
+\label{sec:schema soustraction}
+
+\fig{images/soustracteur-complet.png}{7cm}{7cm}{Circuit logique de la soustraction}{schema-soustraction}
+
+\subsection{Indicateurs de l’UAL} 
+\label{sec:Indicateurs}
+
+\subsubsection{Résultat nul}
+\label{sec:nul}
+
+pour vérifier si le résultat est nul ou non on a mis en place un comparateur de quatre bits. En comparant entre le résultat obtenu de l'ALU et une constante nulle on a eu le résultat.
+\newpage
+
+\fig{images/comparateur.png}{5cm}{5cm}{Circuit logique du comparateur quatre bits}{schema-comparateur}
+
+\fig{images/implementation-comparateur.PNG}{5cm}{3cm}{implémentation du comparateur quatre bits }{schema-comparateur-impl}
+
+\subsubsection{débordement et signaux d'entrée}
+\label{sec:deb}
+
+\paragraph{} l'ajout d’un signal d’indication d’OVF, d’un signal de retenue sortante, d’un signal de résultat négatif dans l’ALU  qui  provoquent  l’allumage  d’une  diode  s’ils  sont  actifs.
+
+\paragraph{} l'ajout signaux d’entrée de l’UAL : enA et enB qui, s’ils sont actifs, autorisent la prise en compte des entrées A et
+/ou B. Dans le cas contraire, les entrées sont à 0.
+
+\paragraph{} Relier ces signaux à l’unité de contrôle de manière à ce qu’ils apparaissent dans l’instruction dans le champs 
+EXT.
+
+\fig{images//over.png}{6cm}{6cm}{implémentation du comparateur quatre bits et des signaux d'entrées}{schema-comparateur-deb}
